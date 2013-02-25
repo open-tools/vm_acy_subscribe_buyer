@@ -15,16 +15,11 @@
     </files>
     <languages>
         <language tag="en-GB">en-GB.plg_vmcustom_acy_subscribe_buyer.ini</language>
+        <language tag="de-DE">de-DE.plg_vmcustom_acy_subscribe_buyer.ini</language>
+        <language tag="en-GB">en-GB.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
+        <language tag="de-DE">de-DE.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
     </languages>
     <scriptfile>acy_subscribe_buyer.script.php</scriptfile>
     <params addpath="/administrator/components/com_virtuemart/elements">
-	<param name="auto_subscribe" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
-                        <option value="0">COM_VIRTUEMART_NO</option>
-                        <option value="1">COM_VIRTUEMART_YES</option>
-                </param>
-	<param name="allow_registered_subscribe" type="radio" default="1" label="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE_DESC" >
-                        <option value="0">COM_VIRTUEMART_NO</option>
-                        <option value="1">COM_VIRTUEMART_YES</option>
-                </param>
     </params>
 </install>

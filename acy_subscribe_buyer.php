@@ -15,6 +15,10 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  * http://kainhofer.com
  */
 if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+if(!include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_acymailing'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php')){
+	echo 'This plugin requires the AcyMailing Component to be installed';
+	return;
+};
 
 class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 
@@ -67,7 +71,7 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 	function getUserSubscriptions ($uid) {
 		if (!($uid>0)) return array();
 		$db = &JFactory::getDBO();
-		$q = "SELECT `listid` FROM `#__acymailing_listsub` WHERE `subid` = '".(int)$uid."'";
+		$q = "SELECT `listid` FROM `#__acymailing_listsub` WHERE `subid` = '".(int)$uid."' AND `status`='1'";
 		$db->setQuery($q);
 		$subscribed = $db->loadColumn();
 		return $subscribed;
@@ -79,7 +83,6 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 			$q = "SELECT `id`, `name`, `email` FROM `#__users` WHERE `id`=".(int)$uid;
 			$db->setQuery($q);
 			$userinfo = $db->loadObject();
-// print("<pre>addAcyUser ($name, $email, $uid): loaded user data <br>(SQL: $q) <br/>".print_r($userinfo,1)."</pre>");
 			if (empty($email)) 
 				$email = $userinfo->email;
 			if (empty($name))
@@ -97,7 +100,7 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 		}
 		return $db->insertid();
 	}
-	/** Adds the acy user to all the given lists (the subscriber has already been created).*/
+	/** Adds the acy user to all the given lists (the subscriber has already been created). If the user has unsubscribed, he will not be subscribed again! */
 	function subscribeUser ($acyuid, $lists) {
 		$db = &JFactory::getDBO();
 		foreach ($lists as $l) {
@@ -108,10 +111,6 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 			$db->setQuery($q);
 			$db->query();
 		}
-	}
-	/** Removes the user from all the given lists */
-	function unsubscribeUser ($acyuid, $lists) {
-		// TODO
 	}
 
 	/**
@@ -144,29 +143,40 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 		return true ;
 	}
 	
+	function addAcyStuff () {
+		acymailing_initModule('header',null);
+	}
+	function getThisURL() {
+		if (isset ($_SERVER['REQUEST_URI'])) {
+			$request_uri = $_SERVER['REQUEST_URI'];
+		} else {
+			$request_uri = $_SERVER['PHP_SELF'];
+			if (!empty($_SERVER['QUERY_STRING'])) $request_uri .= '?' . $_SERVER['QUERY_STRING'];
+		}
+		return ((empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) != "on") ? "http://" : "https://") . $_SERVER['HTTP_HOST'].$request_uri;
+	}
+	
+	
 	function displayProduct($field) {
-$this->addAcyUser("Reinhold Kainhofer", "reinhold@kainhofer.com" , 673);
 		$html = '';
 		$this->parseCustomParams($field);
-		$user = JFactory::getUser()->get('id');
-		if ($user>0) {
-			$acyuid = $this->getAcyUidFromUser($user);
+		$user = JFactory::getUser();
+		$uid = $user->get('id');
+		if ($uid>0) {
+			$acyuid = $this->getAcyUidFromUser($uid);
 			$allsubscriptions = $this->getUserSubscriptions($acyuid);
-			$subscribed = array_intersect ($field->lists, $allsubscriptions);
-			$notsubscribed = array_diff ($field->lists, $allsubscriptions);
-			if (!empty($notsubscribed)) {
-				$html .= $this->renderByLayout('button_subscribe', array($notsubscribed, $user, $field));
-				// TODO: implement subscribe button
-			}
-			if (!empty($subscribed)) {
-				// TODO: implement unsubscribe button
-				$html .= $this->renderByLayout('button_unsubscribe', array($subscribed, $user, $field));
-			}
-// 			$html .= "<pre>USER: $user, field: ".print_r($field,1).", all subscriptions: ".print_r($allsubscriptions,1).", subscriptions: ".print_r($subscribed,1).", unsubscriptions: ".print_r($notsubscribed,1).", lists: ".print_r($field->lists, 1)."</pre>";
+			$uinfo = array(
+				'id' => $uid,
+				'name' => $user->get('name'), 
+				'email' => $user->get('email'),
+				'subscribed' => array_intersect ($field->lists, $allsubscriptions),
+				'notsubscribed' => array_diff ($field->lists, $allsubscriptions),
+			);
+			$this->addAcyStuff();
+			$html .= $this->renderByLayout('button_subscribe', array(acymailing_getModuleFormName(), $uinfo, $field->lists, $this->getThisURL(), $field));
 		} elseif ($field->allow_subscribe) {
-			$html .= $this->renderByLayout('button_subscribe_anon', array($field->lists, $field));
-			// TODO: Display anonymous subscribe button
-			$html = "<pre>NO USER, SUBSCRIBE allowed</pre>";
+			$this->addAcyStuff();
+			$html .= $this->renderByLayout('button_subscribe', array(acymailing_getModuleFormName(), array(), $field->lists, $this->getThisURL(), $field));
 		} else {
 			// Not logged in, manual subscription not allowed
 		}
@@ -245,25 +255,23 @@ $this->addAcyUser("Reinhold Kainhofer", "reinhold@kainhofer.com" , 673);
 		$customModel = VmModel::getModel('customfields');
 		foreach ($order['items'] as $item) {
 			$customs = $customModel->getproductCustomslist ($item->virtuemart_product_id);
-JFactory::getApplication()->enqueueMessage("<pre>Custom fields: ".print_r($customs,1)."</pre>", 'error');
 			foreach ($customs as $field) {
 				if ($field->custom_element != $this->_name) continue;
 				if (!$field->subscribe_buyers) continue;
 				// Add the user to the lists:
 				if(!($acyuid>0)) {
-					$acyuid = $this->addAcyUser($name, $email, $uid);
+					$acyuid = $this->addAcyUser ($name, $email, $uid);
 				}
-				$allsubscriptions = $this->getUserSubscriptions($acyuid);
+				$allsubscriptions = $this->getUserSubscriptions ($acyuid);
 				$notsubscribed = array_diff ($field->lists, $allsubscriptions);
 				$this->subscribeUser($acyuid, $notsubscribed);
-				foreach ($notsubscribed as $l) {
-					$listname=$this->getAcyListname($l);
-					JFactory::getApplication()->enqueueMessage(JText::sprintf('VMCUSTOM_ACYBUYER_ADDED_USER', $name, $email, $listname), 'info');
-				}
+				// TODO: Shall we display an infor message about the subscription?
+				// foreach ($notsubscribed as $l) {
+				//	$listname=$this->getAcyListname($l);
+				//	JFactory::getApplication()->enqueueMessage(JText::sprintf('VMCUSTOM_ACYBUYER_ADDED_USER', $name, $email, $listname), 'info');
+				// }
 			}
 		}
-		// TODO: If auto-subscribe 
-JFactory::getApplication()->enqueueMessage("plgVmConfirmedOrder, cart: <pre>".print_r($cart,1)."</pre><br><h2>ORDER:</h2><pre>".print_r($order,1)."</pre>", 'error');
 	}
 }
 
