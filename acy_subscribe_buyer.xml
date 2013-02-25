@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmcustom" method="upgrade">
+    <name>VMCUSTOM_ACYBUYER</name>
+    <creationDate>2013-02-24</creationDate>
+    <author>Reinhold Kainhofer</author>
+    <authorUrl>http://www.kainhofer.com/</authorUrl>
+    <copyright>Copyright (C) 2013 Reinhold Kainhofer. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3+</license>
+    <version>1.0.0</version>
+    <description>VMCUSTOM_ACYBUYER_DESC</description>
+    <files>
+        <filename plugin="acy_subscribe_buyer">acy_subscribe_buyer.php</filename>
+        <filename>acy_subscribe_buyer.script.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <languages>
+        <language tag="en-GB">en-GB.plg_vmcustom_acy_subscribe_buyer.ini</language>
+    </languages>
+    <scriptfile>acy_subscribe_buyer.script.php</scriptfile>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+	<param name="auto_subscribe" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
+                        <option value="0">COM_VIRTUEMART_NO</option>
+                        <option value="1">COM_VIRTUEMART_YES</option>
+                </param>
+	<param name="allow_registered_subscribe" type="radio" default="1" label="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE_DESC" >
+                        <option value="0">COM_VIRTUEMART_NO</option>
+                        <option value="1">COM_VIRTUEMART_YES</option>
+                </param>
+    </params>
+</install>
