@@ -4,10 +4,10 @@ VERSION=1.0
 
 PLUGINFILES=$(BASE).php $(BASE).script.php $(BASE).xml index.html
 
-TRANSLATIONS=$(call wildcard,*.plg_$(PLUGINTYPE)_$(BASE).*ini) 
+TRANSLATIONS=$(call wildcard,language/*/*.plg_$(PLUGINTYPE)_$(BASE).*ini) language/index.html $(call wildcard,language/*/index.html)
 INDEXFILES=$(BASE)/index.html
 TMPLFILES=$(call wildcard,$(BASE)/tmpl/*.php) $(BASE)/index.html $(BASE)/tmpl/index.html
-ASSETS=$(call wildcard,assets/*.png) $(call wildcard,assets/*.css) 
+ASSETS=$(call wildcard,$(BASE)/assets/*.png) $(call wildcard,$(BASE)/assets/*.css) 
 # assets/index.html
 ZIPFILE=plg_$(PLUGINTYPE)_$(BASE)_v$(VERSION).zip
 

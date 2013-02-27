@@ -11,15 +11,27 @@
     <files>
         <filename plugin="acy_subscribe_buyer">acy_subscribe_buyer.php</filename>
         <filename>acy_subscribe_buyer.script.php</filename>
+        <folder>acy_subscribe_buyer</folder>
         <filename>index.html</filename>
+	<folder>language</folder>
     </files>
-    <languages>
-        <language tag="en-GB">en-GB.plg_vmcustom_acy_subscribe_buyer.ini</language>
-        <language tag="de-DE">de-DE.plg_vmcustom_acy_subscribe_buyer.ini</language>
-        <language tag="en-GB">en-GB.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
-        <language tag="de-DE">de-DE.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
+    <languages folder="language">
+	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acy_subscribe_buyer.ini</language>
+	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acy_subscribe_buyer.ini</language>
+	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
+	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
     </languages>
     <scriptfile>acy_subscribe_buyer.script.php</scriptfile>
     <params addpath="/administrator/components/com_virtuemart/elements">
+        <param type="vmjpluginwarning" />
+        <param name="subscribe_buyers_default" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
+        <param name="allow_subscribe_default" type="list" default="0" label="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE_DESC" >
+            <option value="0">VMCUSTOM_ACYBUYER_ALLOW_NONE</option>
+            <option value="1">VMCUSTOM_ACYBUYER_ALLOW_REGISTERED</option>
+            <option value="2">VMCUSTOM_ACYBUYER_ALLOW_ANONYMOUS</option>
+        </param>
     </params>
 </install>
