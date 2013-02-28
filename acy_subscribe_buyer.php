@@ -251,7 +251,6 @@ class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
 			$customs = $customModel->getproductCustomslist ($item->virtuemart_product_id);
 			foreach ($customs as $field) {
 				if ($field->custom_element != $this->_name) continue;
-print("<pre>Field : ".print_r($field,1)."<br>. this: ".print_r($this,1)."</pre>");
 				$subscribe = ($field->subscribe_buyers>=0)?($field->subscribe_buyers):($field->subscribe_buyers_default);
 				if (!$field->subscribe_buyers) continue;
 				// Add the user to the lists:
