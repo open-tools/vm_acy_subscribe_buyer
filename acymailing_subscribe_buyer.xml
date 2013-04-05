@@ -3,25 +3,25 @@
     <name>VMCUSTOM_ACYBUYER</name>
     <creationDate>2013-02-24</creationDate>
     <author>Reinhold Kainhofer</author>
-    <authorUrl>http://www.kainhofer.com/</authorUrl>
+    <authorUrl>http://www.open-tools.net/</authorUrl>
     <copyright>Copyright (C) 2013 Reinhold Kainhofer. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3+</license>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>VMCUSTOM_ACYBUYER_DESC</description>
     <files>
-        <filename plugin="acy_subscribe_buyer">acy_subscribe_buyer.php</filename>
-        <filename>acy_subscribe_buyer.script.php</filename>
-        <folder>acy_subscribe_buyer</folder>
+        <filename plugin="acymailing_subscribe_buyer">acymailing_subscribe_buyer.php</filename>
+        <filename>acymailing_subscribe_buyer.script.php</filename>
+        <folder>acymailing_subscribe_buyer</folder>
         <filename>index.html</filename>
 	<folder>language</folder>
     </files>
     <languages folder="language">
-	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acy_subscribe_buyer.ini</language>
-	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acy_subscribe_buyer.ini</language>
-	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
-	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acy_subscribe_buyer.sys.ini</language>
+	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
+	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
+	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
+	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
     </languages>
-    <scriptfile>acy_subscribe_buyer.script.php</scriptfile>
+    <scriptfile>acymailing_subscribe_buyer.script.php</scriptfile>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="subscribe_buyers_default" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >

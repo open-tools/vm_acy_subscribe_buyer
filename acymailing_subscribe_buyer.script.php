@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-class plgVmCustomAcy_subscribe_BuyerInstallerScript
+class plgVmCustomAcyMailing_subscribe_BuyerInstallerScript
 {
     /**
      * Constructor

@@ -19,7 +19,7 @@ if(!include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARA
 	JFactory::getApplication()->enqueueMessage(JText::_('VMCUSTOM_ACYBUYER_ACYMAILING_NEEDED'), 'error');
 } else {
 
-class plgVmCustomAcy_subscribe_Buyer extends vmCustomPlugin {
+class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 
 	function __construct(& $subject, $config) {
 		parent::__construct($subject, $config);
