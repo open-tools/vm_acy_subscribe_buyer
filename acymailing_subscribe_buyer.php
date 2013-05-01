@@ -17,7 +17,8 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
 if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 if(!include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_acymailing'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php')){
 	JFactory::getApplication()->enqueueMessage(JText::_('VMCUSTOM_ACYBUYER_ACYMAILING_NEEDED'), 'error');
-} else {
+	return;
+}
 
 class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 
@@ -270,5 +271,4 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	}
 }
 
-} // end if acymailing can be loaded
 // No closing tag
