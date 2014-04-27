@@ -22,9 +22,10 @@
         <language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
     </languages>
     <scriptfile>acymailing_subscribe_buyer.script.php</scriptfile>
+    <!-- VM 3.x support (fields rather than params): -->
     <vmconfig>
         <fields name="params">
-          <fieldset>
+          <fieldset name="customfield" label="VMCUSTOM_ACYBUYER">
             <field name="subscribe_buyers_default" type="radio" scope="com_virtuemart" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
                 <option value="0">COM_VIRTUEMART_NO</option>
                 <option value="1">COM_VIRTUEMART_YES</option>
@@ -37,7 +38,8 @@
           </fieldset>
         </fields>
     </vmconfig>
-    
+
+    <!-- VM 2.x support (params rather than fields): -->
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="subscribe_buyers_default" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
