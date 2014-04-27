@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmcustom" method="upgrade">
     <name>VMCUSTOM_ACYBUYER</name>
-    <creationDate>2013-02-24</creationDate>
+    <creationDate>2014-04-27</creationDate>
     <author>Reinhold Kainhofer</author>
     <authorUrl>http://www.open-tools.net/</authorUrl>
     <copyright>Copyright (C) 2013 Reinhold Kainhofer. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3+</license>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>VMCUSTOM_ACYBUYER_DESC</description>
     <files>
         <filename plugin="acymailing_subscribe_buyer">acymailing_subscribe_buyer.php</filename>

@@ -90,6 +90,7 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 		foreach ($lists as $l) {
 			$newSubscription[$l] = array ('status'=>1);
 		}
+		$subscriberClass->checkAccess = false;
 		$subscriberClass->saveSubscription($acyuid, $newSubscription);
 	}
 
