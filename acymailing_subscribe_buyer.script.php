@@ -47,7 +47,7 @@ class plgVmCustomAcyMailing_subscribe_BuyerInstallerScript
     {
         // enabling plugin
         $db =& JFactory::getDBO();
-        $db->setQuery('update #__extensions set enabled = 1 where type = "plugin" and element = "acy_subscribe_buyer" and folder = "vmcustom"');
+        $db->setQuery('update #__extensions set enabled = 1 where type = "plugin" and element = "acymailing_subscribe_buyer" and folder = "vmcustom"');
         $db->query();
         
         return True;

@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install version="1.5" type="plugin" group="vmcustom" method="upgrade">
+<extension version="2.5" type="plugin" group="vmcustom" method="upgrade">
     <name>VMCUSTOM_ACYBUYER</name>
     <creationDate>2014-04-27</creationDate>
     <author>Reinhold Kainhofer</author>
     <authorUrl>http://www.open-tools.net/</authorUrl>
-    <copyright>Copyright (C) 2013 Reinhold Kainhofer. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2013-2014 Reinhold Kainhofer. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3+</license>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <description>VMCUSTOM_ACYBUYER_DESC</description>
     <files>
         <filename plugin="acymailing_subscribe_buyer">acymailing_subscribe_buyer.php</filename>
         <filename>acymailing_subscribe_buyer.script.php</filename>
         <folder>acymailing_subscribe_buyer</folder>
         <filename>index.html</filename>
-	<folder>language</folder>
+        <folder>language</folder>
     </files>
     <languages folder="language">
-	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
-	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
-	<language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
-	<language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_vmcustom_acymailing_subscribe_buyer.sys.ini</language>
     </languages>
     <scriptfile>acymailing_subscribe_buyer.script.php</scriptfile>
+    <vmconfig>
+        <fields name="params">
+            <field name="subscribe_buyers_default" type="radio" scope="com_virtuemart" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
+                <option value="0">COM_VIRTUEMART_NO</option>
+                <option value="1">COM_VIRTUEMART_YES</option>
+            </field>
+            <field name="allow_subscribe_default" type="list" scope="com_virtuemart" default="0" label="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE_DESC" >
+                <option value="0">VMCUSTOM_ACYBUYER_ALLOW_NONE</option>
+                <option value="1">VMCUSTOM_ACYBUYER_ALLOW_REGISTERED</option>
+                <option value="2">VMCUSTOM_ACYBUYER_ALLOW_ANONYMOUS</option>
+            </field>
+        </fields>
+    </vmconfig>
+    
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="subscribe_buyers_default" type="radio" default="1" label="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE" description="VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE_DESC" >
@@ -34,4 +48,4 @@
             <option value="2">VMCUSTOM_ACYBUYER_ALLOW_ANONYMOUS</option>
         </param>
     </params>
-</install>
+</extension>
