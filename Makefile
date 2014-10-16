@@ -1,6 +1,6 @@
 BASE=acymailing_subscribe_buyer
 PLUGINTYPE=vmcustom
-VERSION=1.3
+VERSION=1.4
 
 PLUGINFILES=$(BASE).php $(BASE).script.php $(BASE).xml index.html
 

@@ -16,7 +16,7 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  */
 if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 if(!include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_acymailing'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php')){
-	// For some reason, J3.3 does not load the language file otherwice
+	// For some reason, J3.3 does not load the language file otherwise
 	$language = JFactory::getLanguage();
 	$language->load('plg_vmcustom_acymailing_subscribe_buyer');
 	JFactory::getApplication()->enqueueMessage(JText::_('VMCUSTOM_ACYBUYER_ACYMAILING_NEEDED'), 'error');
@@ -34,7 +34,11 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 			'allow_subscribe_default'=>array(0, 'int'),
 			'lists'=>array(array(), 'array'),
 		);
-		$this->setConfigParameterable((VM_VERSION<3)?'custom_params':'customfield_params',$varsToPush);
+		if(!defined('VM_VERSION') or VM_VERSION < 3){
+			$this->setConfigParameterable ('custom_params', $varsToPush);
+		} else {
+			$this->setConfigParameterable ('customfield_params', $varsToPush);
+		}
 	}
 	function plgVmOnSelfCallFE($type,$name,&$render) {
 		if ($name != $this->_name || $type != 'vmcustom') return false;
@@ -103,9 +107,13 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	 */
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
-		$this->parseCustomParams($field);
+		if(!defined('VM_VERSION') or VM_VERSION < 3){
+			$this->parseCustomParams ($field); // Not needed in VM3!
+			$paramName = 'custom_param';
+		} else {
+			$paramName = 'customfield_params';
+		}
 
-// 		JFactory::getApplication()->enqueueMessage("plgVmCustomAcyMailing_subscribe_Buyer::plgVmOnProductEdit: field=<pre>".print_r($field, 1)."</pre>", 'error');
 		$html = '';
 		$html .='<fieldset>
 			<legend>'. JText::_('VMCUSTOM_ACYBUYER') .'</legend>
@@ -123,14 +131,14 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 		
 		$lists = $this->getAcyMailinglists();
 		if ($lists) {
-			$html .= VmHTML::row ('select','VMCUSTOM_ACYBUYER_LIST', ((VM_VERSION<3)?'custom_param':'customfield_params').'['.$row.'][lists][]', $lists, $field->lists, ' multiple', 'listid', 'name', '');
+			$html .= VmHTML::row ('select','VMCUSTOM_ACYBUYER_LIST', $paramName.'['.$row.'][lists][]', $lists, $field->lists, ' multiple', 'listid', 'name', '');
 			
-			$html .= VmHTML::row('select', 'VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE', ((VM_VERSION<3)?'custom_param':'customfield_params').'['.$row.'][subscribe_buyers]', 
+			$html .= VmHTML::row('select', 'VMCUSTOM_ACYBUYER_AUTO_SUBSCRIBE', $paramName.'['.$row.'][subscribe_buyers]', 
 				array_merge(
 					array(array('id'=>'-1', 'name'=>JText::sprintf('VMCUSTOM_ACYBUYER_AUTO_DEFAULT', JText::_($autosubscribe_modes[$field->subscribe_buyers_default]['name'])))),
 					$autosubscribe_modes),
 				$field->subscribe_buyers,'','id', 'name', false);
-			$html .= VmHTML::row('select', 'VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE', ((VM_VERSION<3)?'custom_param':'customfield_params').'['.$row.'][allow_subscribe]', 
+			$html .= VmHTML::row('select', 'VMCUSTOM_ACYBUYER_ALLOW_SUBSCRIBE', $paramName.'['.$row.'][allow_subscribe]', 
 				array_merge(
 					array(array('id'=>'-1', 'name'=>JText::sprintf('VMCUSTOM_ACYBUYER_ALLOW_DEFAULT', JText::_($subscribe_modes[$field->allow_subscribe_default]['name'])))),
 					$subscribe_modes),
@@ -162,7 +170,6 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	
 	function displayProduct($field) {
 		$html = '';
-		$this->parseCustomParams($field);
 		$user = JFactory::getUser();
 		$uid = $user->get('id');
 		$allow = ($field->allow_subscribe>=0)?($field->allow_subscribe):($field->allow_subscribe_default);
@@ -201,19 +208,14 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	/**
 	 * plgVmOnDisplayProductVariantFE ... Called for product variant custom fields to display on the product details page
 	 */
+	// Legacy triggers for VM2:
 	function plgVmOnDisplayProductVariantFE($field,&$row,&$group) {
-		// default return if it's not this plugin
-		if ($field->custom_element != $this->_name) return '';
-		$group->display .= $this->displayProduct($field);
-		return true;
+		return plgVmOnDisplayProductFE($field, $row, $group);
 	}
-
-	/**
-	 * plgVmOnDisplayProductFE ... Called for NON-product variant custom fields to display on the product details page
-	 */
 	function plgVmOnDisplayProductFE( $product, &$idx,&$field){
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
+		$this->parseCustomParams($field); // <- not needed in VM3 any more, so do it here
 		$field->display .= $this->displayProduct($field);
 		return true;
 	}
@@ -227,11 +229,6 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	}
 
 
-	/**
-	 * We must reimplement this triggers for joomla 1.7
-	 * vmplugin triggers note by Max Milbers
-	 */
-	// TODO: Really required or deprecated?
 	public function plgVmOnStoreInstallPluginTable($psType, $name) {
 		return $this->onStoreInstallPluginTable($psType, $name);
 	}
@@ -274,13 +271,11 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 		}
 		$customModel = VmModel::getModel('customfields');
 		foreach ($order['items'] as $item) {
-// 			JFactory::getApplication()->enqueueMessage("plgVmConfirmedOrder, checking item: <pre>".print_r($item,1)."</pre>", 'error');
 			if (VM_VERSION<3) {
 				$customs = $customModel->getproductCustomslist ($item->virtuemart_product_id);
 			} else {
 				$customs = $customModel->getCustomEmbeddedProductCustomFields (array($item->virtuemart_product_id));
 			}
-// 			JFactory::getApplication()->enqueueMessage("plgVmConfirmedOrder, CUSTOMS: <pre>".print_r($customs,1)."</pre>", 'error');
 			foreach ($customs as $field) {
 				if ($field->custom_element != $this->_name) continue;
 				$subscribe = ($field->subscribe_buyers>=0)?($field->subscribe_buyers):($field->subscribe_buyers_default);
