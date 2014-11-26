@@ -76,7 +76,7 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	}
 	/** Creates a new AcyMailing user for the given name/email/uid */
 	function addAcyUser ($name, $email, $uid) {
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if ($uid>0) {
 			$q = "SELECT `id`, `name`, `email` FROM `#__users` WHERE `id`=".(int)$uid;
 			$db->setQuery($q);
