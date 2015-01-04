@@ -210,7 +210,10 @@ class plgVmCustomAcyMailing_subscribe_Buyer extends vmCustomPlugin {
 	 */
 	// Legacy triggers for VM2:
 	function plgVmOnDisplayProductVariantFE($field,&$row,&$group) {
-		return plgVmOnDisplayProductFE($field, $row, $group);
+		// default return if it's not this plugin
+		if ($field->custom_element != $this->_name) return '';
+		$group->display .= $this->displayProduct($field);
+		return true;
 	}
 	function plgVmOnDisplayProductFE( $product, &$idx,&$field){
 		// default return if it's not this plugin
