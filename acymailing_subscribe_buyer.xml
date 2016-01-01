@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmcustom" method="upgrade">
     <name>VMCUSTOM_ACYBUYER</name>
-    <creationDate>2014-04-27</creationDate>
+    <creationDate>2016-01-01</creationDate>
     <author>Reinhold Kainhofer</author>
     <authorUrl>http://www.open-tools.net/</authorUrl>
     <copyright>Copyright (C) 2013-2014 Reinhold Kainhofer. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3+</license>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <description>VMCUSTOM_ACYBUYER_DESC</description>
     <files>
         <filename plugin="acymailing_subscribe_buyer">acymailing_subscribe_buyer.php</filename>
@@ -52,4 +52,9 @@
             <option value="2">VMCUSTOM_ACYBUYER_ALLOW_ANONYMOUS</option>
         </param>
     </params>
+	
+	<updateservers>
+		<server type="extension" name="VM Customers to AcyMailing Subscription Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=AcySubscribeBuyer]]></server>
+	</updateservers>
+
 </extension>

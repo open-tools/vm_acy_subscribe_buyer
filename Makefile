@@ -1,6 +1,6 @@
 BASE=acymailing_subscribe_buyer
 PLUGINTYPE=vmcustom
-VERSION=1.4.2
+VERSION=1.4.3
 
 PLUGINFILES=$(BASE).php $(BASE).script.php $(BASE).xml index.html
 
@@ -14,7 +14,7 @@ ZIPFILE=plg_$(PLUGINTYPE)_$(BASE)_v$(VERSION).zip
 
 zip: $(PLUGINFILES) $(TRANSLATIONS) $(ELEMENTS) $(TMPLFILES)
 	@echo "Packing all files into distribution file $(ZIPFILE):"
-	@zip -r $(ZIPFILE) $(PLUGINFILES) $(TRANSLATIONS) $(ELEMENTS) $(INDEXFILES) $(TMPLFILES) $(ASSETS)
+	@zip -r $(ZIPFILE) $(PLUGINFILES) $(TRANSLATIONS) $(ELEMENTS) $(INDEXFILES) $(TMPLFILES) $(ASSETS) LICENSE.txt
 
 clean:
 	rm -f $(ZIPFILE)

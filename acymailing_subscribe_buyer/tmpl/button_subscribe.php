@@ -5,7 +5,7 @@
  * @package VirtueMart
  * @subpackage custom
  * @copyright Copyright (C) 2013 RK - All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  *
  **/
   
