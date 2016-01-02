@@ -54,7 +54,7 @@
     </params>
 	
 	<updateservers>
-		<server type="extension" name="VM Customers to AcyMailing Subscription Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=AcySubscribeBuyer]]></server>
+		<server type="extension" name="VM Customers to AcyMailing Subscription Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=AcySubscribeBuyer&amp;file=extension.xml]]></server>
 	</updateservers>
 
 </extension>
